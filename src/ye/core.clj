@@ -61,7 +61,7 @@
   [to-type]
   (to-type
    {:edn identity
-    :yaml yaml/generate-string
+    :yaml #(yaml/generate-string :dumper-options {:flow-style :block})
     :json #(jsonista/write-value-as-string % json-mapper)}))
 
 (defn safe-read
@@ -99,6 +99,7 @@
 
 (defn -main
   [& args]
+  (System/setProperty "java.runtime.name" "graalvm")
   (-> args
       (cli/parse-opts cli-options)
       (main)))

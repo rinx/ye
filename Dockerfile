@@ -9,6 +9,7 @@ WORKDIR /ye
 
 COPY project.clj project.clj
 COPY src src
+COPY reflection.json reflection.json
 
 RUN lein uberjar
 RUN native-image \
@@ -18,6 +19,7 @@ RUN native-image \
     -J-Dclojure.spec.skip-macros=true \
     -J-Dclojure.compiler.direct-linking=true \
     -H:Log=registerResource: \
+    -H:ReflectionConfigurationFiles=reflection.json \
     --verbose \
     --no-fallback \
     --no-server \
