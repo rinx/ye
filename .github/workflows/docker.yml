@@ -1,0 +1,29 @@
+name: Build docker image
+on:
+  push:
+    path:
+      - Dockerfile
+      - src
+      - project.clj
+      - reflection.json
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the Docker image
+      run: |
+        echo "Build docker image"
+        docker build -t ye .
+    - name: login to GitHub package registry
+      run: |
+        echo "Login to GitHub package registry"
+        echo ${GITHUB_TOKEN} | docker login docker.pkg.github.com --username rinx --password-stdin
+      env:
+        GITHUB_TOKEN: ${{ secrets.YE_TOKEN }}
+    - name: tag and push to GitHub package registry
+      run: |
+        echo "Push to GitHub package registry"
+        docker tag ye docker.pkg.github.com/rinx/ye/ye:latest
+        docker push docker.pkg.github.com/rinx/ye/ye:latest

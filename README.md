@@ -1,5 +1,8 @@
 # ye
 
+[![GitHub Actions: Build native image](https://github.com/rinx/ye/workflows/Build%20native%20image/badge.svg)](https://github.com/rinx/ye/actions)
+[![GitHub Actions: Build docker image](https://github.com/rinx/ye/workflows/Build%20docker%20image/badge.svg)](https://github.com/rinx/ye/actions)
+
 ## Usage
 
     $ ye --help
