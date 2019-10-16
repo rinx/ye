@@ -4,6 +4,10 @@
 [![GitHub Actions: Build docker image](https://github.com/rinx/ye/workflows/Build%20docker%20image/badge.svg)](https://github.com/rinx/ye/actions)
 [![GitHub Actions: Release](https://github.com/rinx/ye/workflows/Release/badge.svg)](https://github.com/rinx/ye/actions)
 
+yaml <-> edn (<-> json) converter CLI tool.
+
+ye = yaml-edn converter
+
 ## Usage
 
     $ ye --help
