@@ -9,9 +9,11 @@ WORKDIR /ye
 
 COPY project.clj project.clj
 COPY src src
-COPY reflection.json reflection.json
 
 RUN lein uberjar
+
+COPY reflection.json reflection.json
+
 RUN native-image \
     -jar target/ye-0.1.0-SNAPSHOT-standalone.jar \
     -H:Name=ye \

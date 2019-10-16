@@ -61,13 +61,16 @@
   [to-type]
   (to-type
    {:edn identity
-    :yaml #(yaml/generate-string :dumper-options {:flow-style :block})
+    :yaml #(yaml/generate-string % :dumper-options {:flow-style :block})
     :json #(jsonista/write-value-as-string % json-mapper)}))
 
 (defn safe-read
   [file]
-  (when (.exists (io/file file))
-    (slurp file)))
+  (if (.exists (io/file file))
+    (slurp file)
+    (do
+      (println "File not found: " file)
+      (System/exit 1))))
 
 (defn process
   [from-type to-type file]

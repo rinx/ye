@@ -1,10 +1,14 @@
 # ye
 
-
-
 ## Usage
 
+    $ ye --help
 
+    $ ye --from yaml --to edn sample.yaml
+
+    $ ye --from edn --to yaml sample.edn
+
+    $ ye --from json --to edn sample.json
 
 ## License
 
