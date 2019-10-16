@@ -6,11 +6,14 @@
    [clojure.edn :as edn]
    [yaml.core :as yaml]
    [jsonista.core :as jsonista]
+   [camel-snake-kebab.core :as csk]
    [clojure.spec.alpha :as spec]
    [expound.alpha :as expound])
   (:gen-class))
 
 (set! *warn-on-reflection* true)
+
+(def usage-header "Usage: ye [options] [filename]")
 
 (def cli-options
   [["-f" "--from TYPE" "From type"
@@ -42,19 +45,24 @@
    :req-un [::options ::arguments]
    :opt-un [::summary ::errors]))
 
+(def json-mapper
+  (jsonista/object-mapper
+   {:pretty true
+    :decode-key-fn csk/->kebab-case-keyword}))
+
 (defn parse-string-fn
   [from-type]
   (from-type
    {:edn edn/read-string
     :yaml #(yaml/parse-string % :keywords true)
-    :json jsonista/read-value}))
+    :json #(jsonista/read-value % json-mapper)}))
 
 (defn generate-string-fn
   [to-type]
   (to-type
    {:edn identity
     :yaml yaml/generate-string
-    :json jsonista/write-value-as-string}))
+    :json #(jsonista/write-value-as-string % json-mapper)}))
 
 (defn safe-read
   [file]
@@ -75,7 +83,9 @@
   (let [{:keys [from-type to-type help?]} options]
     (cond
       help?
-      (println summary)
+      (do
+        (println usage-header)
+        (println summary))
       (spec/valid? ::parsed-result parsed-result)
       (-> (process from-type to-type (first arguments))
           (println))
@@ -83,7 +93,7 @@
       (do
         (println "Invalid arguments or options")
         (expound/expound ::parsed-result parsed-result)
-        (println "Usage:")
+        (println usage-header)
         (println summary)
         (System/exit 1)))))
 
