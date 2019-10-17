@@ -3,6 +3,7 @@
 [![GitHub Actions: Build native image](https://github.com/rinx/ye/workflows/Build%20native%20image/badge.svg)](https://github.com/rinx/ye/actions)
 [![GitHub Actions: Build docker image](https://github.com/rinx/ye/workflows/Build%20docker%20image/badge.svg)](https://github.com/rinx/ye/actions)
 [![GitHub Actions: Release](https://github.com/rinx/ye/workflows/Release/badge.svg)](https://github.com/rinx/ye/actions)
+[![Docker Pulls](https://img.shields.io/docker/pulls/rinx/ye.svg?style=flat-square)](https://hub.docker.com/r/rinx/ye)
 
 yaml <-> edn (<-> json) converter CLI tool.
 
@@ -16,7 +17,7 @@ It is available to download a native binary from the [latest release](https://gi
 
 Docker image is also available.
 
-    $ docker pull docker.pkg.github.com/rinx/ye/ye:latest
+    $ docker pull rinx/ye:latest
 
 ## Build
 
