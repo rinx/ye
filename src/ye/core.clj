@@ -4,6 +4,7 @@
    [clojure.string :as string]
    [clojure.java.io :as io]
    [clojure.edn :as edn]
+   [clojure.walk :as walk]
    [yaml.core :as yaml]
    [jsonista.core :as jsonista]
    [camel-snake-kebab.core :as csk]
@@ -50,11 +51,16 @@
    {:pretty true
     :decode-key-fn csk/->kebab-case-keyword}))
 
+(defn yaml-mapper
+  [m]
+  (let [f #(map (fn [[k v]] {k v}) %)]
+    (walk/postwalk (fn [x] (if (map? x) (f x) x)) m)))
+
 (defn parse-string-fn
   [from-type]
   (from-type
    {:edn edn/read-string
-    :yaml #(yaml/parse-string % :keywords true)
+    :yaml #(yaml-mapper (yaml/parse-string % :keywords true))
     :json #(jsonista/read-value % json-mapper)}))
 
 (defn generate-string-fn
