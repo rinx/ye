@@ -3,7 +3,7 @@ on:
   push:
     paths:
       - Dockerfile
-      - src
+      - src/ye/*.clj
       - project.clj
       - reflection.json
 

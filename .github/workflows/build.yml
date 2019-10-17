@@ -7,7 +7,7 @@ on:
       - reflection.json
   pull_request:
     paths:
-      - src
+      - src/ye/*.clj
       - project.clj
       - reflection.json
 
