@@ -10,6 +10,7 @@
    [camel-snake-kebab.core :as csk]
    [clojure.spec.alpha :as spec]
    [expound.alpha :as expound])
+  (:import [java.io BufferedReader])
   (:gen-class))
 
 (set! *warn-on-reflection* true)
@@ -35,7 +36,9 @@
   (spec/keys
    :opt-un [::from-type ::to-type ::help?]))
 (spec/def ::arguments
-  (spec/coll-of string? :kind vector? :count 1))
+  (spec/and
+    (spec/coll-of string? :kind vector?)
+    #(< (count %) 2)))
 (spec/def ::summary string?)
 (spec/def ::errors
   (spec/or
@@ -73,6 +76,11 @@
     :yaml #(yaml/generate-string % :dumper-options {:flow-style :block})
     :json #(jsonista/write-value-as-string % json-mapper)}))
 
+(defn read-from-stdin []
+  (->> (BufferedReader. *in*)
+       (line-seq)
+       (string/join "\n")))
+
 (defn safe-read
   [file]
   (if (.exists (io/file file))
@@ -83,7 +91,9 @@
 
 (defn process
   [from-type to-type file]
-  (let [body (safe-read file)
+  (let [body (if (nil? file)
+               (read-from-stdin)
+               (safe-read file))
         parse-string (parse-string-fn from-type)
         generate-string (generate-string-fn to-type)]
     (-> body
