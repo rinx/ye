@@ -5,12 +5,14 @@
    [clojure.java.io :as io]
    [clojure.edn :as edn]
    [clojure.walk :as walk]
+   [clojure.pprint :as pprint]
    [yaml.core :as yaml]
    [jsonista.core :as jsonista]
    [camel-snake-kebab.core :as csk]
    [clojure.spec.alpha :as spec]
    [expound.alpha :as expound])
-  (:import [java.io BufferedReader])
+  (:import
+   [java.io BufferedReader StringWriter])
   (:gen-class))
 
 (set! *warn-on-reflection* true)
@@ -69,10 +71,19 @@
     :yaml #(yaml-mapper (yaml/parse-string % :keywords true))
     :json #(jsonista/read-value % json-mapper)}))
 
+(defn pprint-writer
+  [input]
+  (let [out (StringWriter.)]
+    (pprint/with-pprint-dispatch
+      pprint/code-dispatch
+      (pprint/pprint input out))
+    (-> out
+        (.toString))))
+
 (defn generate-string-fn
   [to-type]
   (to-type
-   {:edn identity
+   {:edn pprint-writer
     :yaml #(yaml/generate-string % :dumper-options {:flow-style :block})
     :json #(jsonista/write-value-as-string % json-mapper)}))
 
