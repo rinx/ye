@@ -2,6 +2,7 @@ name: Build docker image
 on:
   push:
     paths:
+      - .github/workflows/docker.yml
       - Dockerfile
       - src/ye/*.clj
       - project.clj
@@ -27,3 +28,15 @@ jobs:
         echo "Push to GitHub package registry"
         docker tag ye docker.pkg.github.com/rinx/ye/ye:latest
         docker push docker.pkg.github.com/rinx/ye/ye:latest
+    - name: login to DockerHub
+      run: |
+        echo "Login to DockerHub"
+        echo ${DOCKERHUB_PASS} | docker login --username ${DOCKERHUB_USER} --password-stdin
+      env:
+        DOCKERHUB_USER: ${{ secrets.DOCKERHUB_USER }}
+        DOCKERHUB_PASS: ${{ secrets.DOCKERHUB_PASS }}
+    - name: tag and push to DockerHub
+      run: |
+        echo "Push to DockerHub"
+        docker tag ye rinx/ye:latest
+        docker push rinx/ye:latest
