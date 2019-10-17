@@ -8,17 +8,50 @@ yaml <-> edn (<-> json) converter CLI tool.
 
 ye = yaml-edn converter
 
+ye is aimed to be built as a native binary powered by GraalVM.
+
+## Install
+
+It is available to download a native binary from the [latest release](https://github.com/rinx/ye/releases/latest).
+
+Docker image is also available.
+
+    $ docker pull docker.pkg.github.com/rinx/ye/ye:latest
+
+## Build
+
+Please read `Dockerfile`.
+
 ## Usage
 
     $ ye --help
+    Usage: ye [options] [filename]
+      -f, --from TYPE  :yaml  From type
+      -t, --to TYPE    :edn   To type
+      -h, --help
 
+    $ cat sample.yaml
+    jobs:
+      build:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v1
+
+    # from a file
     $ ye --from yaml --to edn sample.yaml
+    {:jobs
+     {:build
+      {:runs-on "ubuntu-latest", :steps [{:uses "actions/checkout@v1"}]}}}
 
-    $ ye --from edn --to yaml sample.edn
-
-    $ ye --from json --to edn sample.json
-
+    # from stdin
     $ cat sample.yaml | ye --from yaml --to edn
+    {:jobs
+     {:build
+      {:runs-on "ubuntu-latest", :steps [{:uses "actions/checkout@v1"}]}}}
+
+    # also, ye can convert edn and json into other types.
+    $ ye --from edn --to yaml sample.edn
+    $ ye --from json --to edn sample.json
 
 ## License
 
