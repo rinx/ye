@@ -53,7 +53,10 @@
 
 (defn yaml-mapper
   [m]
-  (let [f #(map (fn [[k v]] {k v}) %)]
+  (let [f (fn [x]
+            (->> x
+                 (map (fn [[k v]] {k v}))
+                 (reduce #(into %1 %2) {})))]
     (walk/postwalk (fn [x] (if (map? x) (f x) x)) m)))
 
 (defn parse-string-fn
@@ -88,7 +91,7 @@
         (generate-string))))
 
 (defn main
-  [{:keys [options arguments summary errors] :as parsed-result}]
+  [{:keys [options arguments summary] :as parsed-result}]
   (let [{:keys [from-type to-type help?]} options]
     (cond
       help?
