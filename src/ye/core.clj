@@ -37,8 +37,8 @@
    :opt-un [::from-type ::to-type ::help?]))
 (spec/def ::arguments
   (spec/and
-    (spec/coll-of string? :kind vector?)
-    #(< (count %) 2)))
+   (spec/coll-of string? :kind vector?)
+   #(< (count %) 2)))
 (spec/def ::summary string?)
 (spec/def ::errors
   (spec/or
@@ -129,5 +129,4 @@
 (comment
   (-> ["-t yaml" "filename"]
       (cli/parse-opts cli-options)
-      (main))
-  )
+      (main)))
