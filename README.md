@@ -18,6 +18,8 @@ ye = yaml-edn converter
 
     $ ye --from json --to edn sample.json
 
+    $ cat sample.yaml | ye --from yaml --to edn
+
 ## License
 
 Copyright © 2019 rinx
