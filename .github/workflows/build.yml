@@ -2,7 +2,7 @@ name: Build native image
 on:
   push:
     paths:
-      - src
+      - src/ye/*.clj
       - project.clj
       - reflection.json
   pull_request:
