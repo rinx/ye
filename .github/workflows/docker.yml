@@ -17,7 +17,7 @@ jobs:
       run: |
         docker build -t ye . --build-arg GRAALVM_VERSION=${GRAALVM_VERSION}
       env:
-        GRAALVM_VERSION: "19.3.0-java11"
+        GRAALVM_VERSION: "19.3.0"
     - name: login to GitHub package registry
       run: |
         echo ${GITHUB_TOKEN} | docker login docker.pkg.github.com --username ${GITHUB_USER} --password-stdin
