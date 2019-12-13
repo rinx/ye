@@ -22,7 +22,7 @@ jobs:
       run: |
         echo ${GITHUB_TOKEN} | docker login docker.pkg.github.com --username ${GITHUB_USER} --password-stdin
       env:
-        GITHUB_UESR: ${{ secrets.YE_USER }}
+        GITHUB_USER: ${{ secrets.YE_USER }}
         GITHUB_TOKEN: ${{ secrets.YE_TOKEN }}
     - name: tag and push to GitHub package registry
       run: |

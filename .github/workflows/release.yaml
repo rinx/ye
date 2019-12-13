@@ -9,9 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - uses: DeLaGuardo/setup-graalvm@1.0
-      with:
-        graalvm-version: '19.3.0.java8'
+    - uses: jskov/setup-graalvm-linux@19.3.0
     - name: Install dependencies
       run: |
         gu install native-image
