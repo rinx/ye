@@ -25,7 +25,6 @@ jobs:
         gu install native-image
         curl -o lein https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
         chmod a+x lein
-        echo "::set-env name=JAVA_HOME::$GRAALVM_HOME"
     - name: Build uberjar
       run: |
         ./lein uberjar
